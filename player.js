@@ -233,7 +233,6 @@ lp5 = document.createElement("li"),
 lp6 = document.createElement("li"),
 lp7 = document.createElement("li"),
 lp8 = document.createElement("li"),
-lp9 = document.createElement("li"),
 p1 = document.createElement("p"),
 p2 = document.createElement("p"),
 p3 = document.createElement("p"),
@@ -242,8 +241,7 @@ p5 = document.createElement("p"),
 p6 = document.createElement("p"),
 p7 = document.createElement("p"),
 p8 = document.createElement("p"),
-p9 = document.createElement("p"),
-p9inp = document.createElement("input"),
+p8inp = document.createElement("input"),
 repeatLi = document.createElement('li'),
 repeat = document.createElement('p');
 lpb.classList.add("lpb");
@@ -256,7 +254,7 @@ p5.innerText = "1.25";
 p6.innerText = "1.5";
 p7.innerText = "1.75";
 p8.innerText = "7";
-p9.innerText = "Custom";
+p8.innerText = "Custom";
 playbackSpeed.innerText = 'Playback speed'
 psu.classList.add("psu");
 
@@ -269,7 +267,6 @@ nodes = [
     lp6,
     lp7,
     lp8,
-    lp9,
     lpb,
 ];
 
@@ -333,7 +330,6 @@ function cps() {
             psu.appendChild(lp6);
             psu.appendChild(lp7);
             psu.appendChild(lp8);
-            psu.appendChild(lp9);
             lp1.appendChild(p1);
             for (let i = 0; i < nodesMini.length; i++) {
                 nodesMini[i].onclick = () => {
@@ -356,23 +352,23 @@ function cps() {
             lp6.appendChild(p6);
             lp7.appendChild(p7);
             lp8.appendChild(p8);
-            lp9.classList.add("gridPanel")
-            lp9.appendChild(p9);
-            lp9.appendChild(p9inp);
-            p9inp.setAttribute("max", "6.75");
-            p9inp.setAttribute("min", "0.75");
-            p9inp.setAttribute("type", "range");
-            p9inp.setAttribute("step", "0.5");
-            p9inp.classList.add("playbackSpeedCustom");
-            var playbackPercInit = (p9inp.value / p9inp.max) * 100;
-            p9inp.style.background = `linear-gradient(to right, rgb(190, 102, 0) ${playbackPercInit}%, rgb(190 102 0 / 58%) ${playbackPercInit}%)`
-            lp9.addEventListener("input", () => {
-                var playbackPerc = (p9inp.value / p9inp.max) * 100;
-                var playbackPercVal = (p9inp.value / p9inp.max) * 7;
+            lp8.classList.add("gridPanel")
+            lp8.appendChild(p8);
+            lp8.appendChild(p8inp);
+            p8inp.setAttribute("max", "6.75");
+            p8inp.setAttribute("min", "0.75");
+            p8inp.setAttribute("type", "range");
+            p8inp.setAttribute("step", "0.5");
+            p8inp.classList.add("playbackSpeedCustom");
+            var playbackPercInit = (p8inp.value / p8inp.max) * 100;
+            p8inp.style.background = `linear-gradient(to right, rgb(190, 102, 0) ${playbackPercInit}%, rgb(190 102 0 / 58%) ${playbackPercInit}%)`
+            lp8.addEventListener("input", () => {
+                var playbackPerc = (p8inp.value / p8inp.max) * 100;
+                var playbackPercVal = (p8inp.value / p8inp.max) * 7;
                 playbackPercVal = playbackPercVal.toFixed(2);
-                p9.textContent = `Custom: ${playbackPercVal}`
-                p9inp.style.background = `linear-gradient(to right, rgb(190, 102, 0) ${playbackPerc}%, rgb(190 102 0 / 58%) ${playbackPerc}%)`
-                let val = p9inp.value;
+                p8.textContent = `Custom: ${playbackPercVal}`
+                p8inp.style.background = `linear-gradient(to right, rgb(190, 102, 0) ${playbackPerc}%, rgb(190 102 0 / 58%) ${playbackPerc}%)`
+                let val = p8inp.value;
                 mc.playbackRate = val;
             });
         });
@@ -406,7 +402,7 @@ function cps() {
 }
 
 // keybindings
-document.addEventListener("keydown", e => {
+window.addEventListener("keydown", e => {
     const tn = document.activeElement.tagName.toLowerCase();
     if(tn === "input") return
     switch(e.key.toLowerCase()) {
@@ -449,9 +445,43 @@ document.addEventListener("keydown", e => {
         case "s":
             cps()
             break
+        case "y":
+            if(mc.classList.contains("repeatOff")) {
+                mc.classList.remove("repeatOff");
+                mc.classList.add("repeatOn");
+                repeat.innerText = "Repeat is on";
+                mc.loop = true;
+            } else if(mc.classList.contains("repeatOn")) {
+                mc.classList.remove("repeatOn");
+                mc.classList.add("repeatOff");
+                repeat.innerText = "Repeat is off";
+                mc.loop = false;
+            }
+            break;
+        case "1":
+            mc.playbackRate = "0.75"
+            break;
+        case "2":
+            mc.playbackRate = "0.50"
+            break;
+        case "3":
+            mc.playbackRate = "0.25"
+            break;
+        case "4":
+            mc.playbackRate = "1"
+            break;
+        case "5":
+            mc.playbackRate = "1.25"
+            break;
+        case "6":
+            mc.playbackRate = "1.50"
+            break;
+        case "7":
+            mc.playbackRate = "1.75"
+            break;
         case "/":
             event.preventDefault();
-            alert("Keybinds are as follows:\n\nPlay/pause (k or space bar)\nSkip in time (arrow keys)\nTheater mode (t)\nPicture in picture (chrome and others: p)\nFullscreen (f)\nMute (m)\nSettings Panel (s)");
+            alert("Keybinds are as follows:\n\nPlay/pause (k or space bar)\nSkip in time (arrow keys)\nTheater mode (t)\nPicture in picture (chrome and others: p)\nFullscreen (f)\nMute (m)\nSettings Panel (s):\n\nSettings toggles:\n\nRepeat toggle (y)");
             break
     }
 });
